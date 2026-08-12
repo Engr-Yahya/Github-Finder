@@ -3,6 +3,7 @@ import SearchBar from "./components/SearchBar";
 import UserCard from "./components/UserCard";
 import RepoList from "./components/RepoList";
 import SkeletonLoader from "./components/SkeletonLoader";
+import ThemeToggle from "./components/ThemeToggle";
 import { useFetch } from "./hooks/useFetch";
 export default function App() {
   const [username, setUsername] = useState("");
@@ -17,14 +18,17 @@ export default function App() {
   const loading = userLoading || reposLoading;
 
   return (
-    <div style={{ maxWidth: "720px", margin: "40px auto", padding: "0 20px", fontFamily: "system-ui, sans-serif" }}>
-      <h1 style={{ marginBottom: "24px" }}>GitHub Profile Finder</h1>
+    <div style={{ maxWidth: "850px", margin: "40px auto", padding: "0 20px", fontFamily: "system-ui, sans-serif" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
+        <h1 style={{ margin: 0 }}>GitHub Profile Finder</h1>
+        <ThemeToggle />
+      </div>
       <SearchBar onSearch={setUsername} />
 
       {loading && <SkeletonLoader />}
 
       {userError && (
-        <div style={{ marginTop: "24px", padding: "16px", background: "#fff0f0", borderRadius: "10px", color: "#cf222e" }}>
+        <div style={{ marginTop: "24px", padding: "16px", background: "var(--color-danger-bg)", borderRadius: "10px", color: "var(--color-danger-text)" }}>
           {userError}
         </div>
       )}

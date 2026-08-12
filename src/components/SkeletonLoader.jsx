@@ -1,6 +1,6 @@
 const box = (w, h, radius = "6px") => ({
   width: w, height: h, borderRadius: radius,
-  background: "#e0e0e0",
+  background: "var(--color-skeleton)",
   animation: "pulse 1.4s ease-in-out infinite",
 });
 

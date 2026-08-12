@@ -1,3 +1,5 @@
+import { StarIcon } from "./icons";
+
 export default function RepoList({ repos }) {
   const sorted = [...repos].sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 6);
 
@@ -7,13 +9,13 @@ export default function RepoList({ repos }) {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
         {sorted.map((repo) => (
           <a key={repo.id} href={repo.html_url} target="_blank" rel="noreferrer"
-            style={{ padding: "14px", border: "1px solid #e1e4e8", borderRadius: "10px", textDecoration: "none", color: "inherit", display: "block" }}>
-            <p style={{ margin: "0 0 6px", fontWeight: "600", fontSize: "14px", color: "#0969da" }}>{repo.name}</p>
-            <p style={{ margin: "0 0 10px", fontSize: "13px", color: "#57606a", minHeight: "36px" }}>
+            style={{ padding: "14px", border: "1px solid var(--color-border)", borderRadius: "10px", textDecoration: "none", color: "inherit", display: "block", background: "var(--color-bg-elevated)" }}>
+            <p style={{ margin: "0 0 6px", fontWeight: "600", fontSize: "14px", color: "var(--color-link)" }}>{repo.name}</p>
+            <p style={{ margin: "0 0 10px", fontSize: "13px", color: "var(--color-text-secondary)", minHeight: "36px" }}>
               {repo.description?.slice(0, 60) || "No description"}
             </p>
-            <div style={{ display: "flex", gap: "12px", fontSize: "12px", color: "#57606a" }}>
-              <span>⭐ {repo.stargazers_count}</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "12px", color: "var(--color-text-secondary)" }}>
+              <span style={{ display: "flex", alignItems: "center", gap: "4px" }}><StarIcon width={13} height={13} /> {repo.stargazers_count}</span>
               {repo.language && <span>• {repo.language}</span>}
             </div>
           </a>
