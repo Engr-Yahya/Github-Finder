@@ -4,18 +4,44 @@ import UserCard from "./components/UserCard";
 import RepoList from "./components/RepoList";
 import SkeletonLoader from "./components/SkeletonLoader";
 import ThemeToggle from "./components/ThemeToggle";
-import { useFetch } from "./hooks/useFetch";
+import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 export default function App() {
   const [username, setUsername] = useState("");
 
-  const { data: user, loading: userLoading, error: userError } = useFetch(
-    username ? `https://api.github.com/users/${username}` : null
-  );
-  const { data: repos, loading: reposLoading } = useFetch(
-    username ? `https://api.github.com/users/${username}/repos?per_page=100` : null
-  );
+  const fetchUser = async ({ queryKey }) => {
+    const [, name] = queryKey;
+    const res = await axios.get(`https://api.github.com/users/${name}`);
+    return res.data;
+  };
+
+  const fetchRepos = async ({ queryKey }) => {
+    const [, name] = queryKey;
+    const res = await axios.get(`https://api.github.com/users/${name}/repos?per_page=100`);
+    return res.data;
+  };
+
+  const { data: user, isLoading: userLoading, error: userError } = useQuery({
+    queryKey: ["user", username],
+    queryFn: fetchUser,
+    enabled: !!username,
+    retry: false,
+  });
+
+  const { data: repos, isLoading: reposLoading } = useQuery({
+    queryKey: ["repos", username],
+    queryFn: fetchRepos,
+    enabled: !!username,
+    retry: false,
+  });
 
   const loading = userLoading || reposLoading;
+
+  const userErrorMessage = userError
+    ? userError.response?.status === 404
+      ? "User not found"
+      : userError.message
+    : null;
 
   return (
     <div style={{ maxWidth: "850px", margin: "40px auto", padding: "0 20px", fontFamily: "system-ui, sans-serif" }}>
